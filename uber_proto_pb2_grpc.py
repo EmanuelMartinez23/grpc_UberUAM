@@ -40,6 +40,16 @@ class SolicitarViajeStub(object):
                 request_serializer=uber__proto__pb2.Posicion.SerializeToString,
                 response_deserializer=uber__proto__pb2.InfoResponse.FromString,
                 _registered_method=True)
+        self.TerminarViaje = channel.unary_unary(
+                '/SolicitarViaje/TerminarViaje',
+                request_serializer=uber__proto__pb2.TerminarViajeRequest.SerializeToString,
+                response_deserializer=uber__proto__pb2.TerminarViajeResponse.FromString,
+                _registered_method=True)
+        self.EstadoServicio = channel.unary_unary(
+                '/SolicitarViaje/EstadoServicio',
+                request_serializer=uber__proto__pb2.Empty.SerializeToString,
+                response_deserializer=uber__proto__pb2.EstadoServicioResponse.FromString,
+                _registered_method=True)
 
 
 class SolicitarViajeServicer(object):
@@ -52,6 +62,18 @@ class SolicitarViajeServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def TerminarViaje(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def EstadoServicio(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SolicitarViajeServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -59,6 +81,16 @@ def add_SolicitarViajeServicer_to_server(servicer, server):
                     servicer.InfoAuto,
                     request_deserializer=uber__proto__pb2.Posicion.FromString,
                     response_serializer=uber__proto__pb2.InfoResponse.SerializeToString,
+            ),
+            'TerminarViaje': grpc.unary_unary_rpc_method_handler(
+                    servicer.TerminarViaje,
+                    request_deserializer=uber__proto__pb2.TerminarViajeRequest.FromString,
+                    response_serializer=uber__proto__pb2.TerminarViajeResponse.SerializeToString,
+            ),
+            'EstadoServicio': grpc.unary_unary_rpc_method_handler(
+                    servicer.EstadoServicio,
+                    request_deserializer=uber__proto__pb2.Empty.FromString,
+                    response_serializer=uber__proto__pb2.EstadoServicioResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -89,6 +121,60 @@ class SolicitarViaje(object):
             '/SolicitarViaje/InfoAuto',
             uber__proto__pb2.Posicion.SerializeToString,
             uber__proto__pb2.InfoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def TerminarViaje(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/SolicitarViaje/TerminarViaje',
+            uber__proto__pb2.TerminarViajeRequest.SerializeToString,
+            uber__proto__pb2.TerminarViajeResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def EstadoServicio(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/SolicitarViaje/EstadoServicio',
+            uber__proto__pb2.Empty.SerializeToString,
+            uber__proto__pb2.EstadoServicioResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -1,28 +1,45 @@
-syntax ="proto3";
+syntax = "proto3";
 
 // Servicio 1
 service SolicitarViaje {
-	rpc InfoAuto(Posicion) returns (InfoResponse);
+  rpc InfoAuto(Posicion) returns (InfoResponse);
+  rpc TerminarViaje(TerminarViajeRequest) returns (TerminarViajeResponse);
+  rpc EstadoServicio(Empty) returns (EstadoServicioResponse);
 }
 
-
 message Posicion {
-	int32 x = 1;
-	int32 y = 2;
-
+  int32 x = 1;
+  int32 y = 2;
 }
 
 enum tipo_uber {
-	Uber_Planet = 0;
-	Uber_XL = 1;
-	Uber_Black = 2;
+  Uber_Planet = 0;
+  Uber_XL = 1;
+  Uber_Black = 2;
 }
 
 message InfoResponse {
-	bool disponible = 1;
-	Posicion coordenadas =2;
-	tipo_uber uber = 3;
-	int32 tarifa = 4;
-	string placas = 5;
+  bool disponible = 1;
+  Posicion coordenadas = 2;
+  tipo_uber uber = 3;
+  int32 tarifa = 4;
+  string placas = 5;
 }
 
+message TerminarViajeRequest {
+  Posicion posicion_final = 1;
+  string placas = 2;
+  int32 costo_viaje = 3;
+}
+
+message TerminarViajeResponse {
+  bool exito = 1;
+}
+
+message EstadoServicioResponse {
+  int32 viajes_realizados = 1;
+  int32 autos_libres = 2;
+  int32 ganancia_total = 3;
+}
+
+message Empty {}

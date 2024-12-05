@@ -1,51 +1,45 @@
 import grpc
-import random
 import math
 import string
+import random
+from concurrent import futures
 import uber_proto_pb2
 import uber_proto_pb2_grpc
-from concurrent import futures
-
-# Clase Auto
+# Clase para Autos
 class Auto:
-    # constructor de la clase 
-    def __init__(self, id_auto,x, y,disponible=None, tipo_uber=None):
+    def __init__(self, id_auto, x, y, disponible):
         self.id_auto = id_auto
         self.x = x
         self.y = y
         self.disponible = disponible
-        # se cre con un de los tres tipos de Uber
-        self.tipo_uber = tipo_uber if tipo_uber else random.choice([uber_proto_pb2.tipo_uber.Uber_Planet, uber_proto_pb2.tipo_uber.Uber_XL, uber_proto_pb2.tipo_uber.Uber_Black])
+        self.tipo_uber = random.choice([
+            uber_proto_pb2.tipo_uber.Uber_Planet,
+            uber_proto_pb2.tipo_uber.Uber_XL,
+            uber_proto_pb2.tipo_uber.Uber_Black,
+        ])
+        #Generaramos placas una sola vez en el constructor
+        self.placas =f"{''.join(random.choices(string.ascii_uppercase, k=3))}-{''.join(random.choices(string.digits, k=3))}"
 
-    #función para generar placas aleatorias(3 letras y 3 números)
-    def generarPlacas(self):
-        letras = ''.join(random.choices(string.ascii_uppercase, k=3))  # 3 letras aleatorias
-        numeros = ''.join(random.choices(string.digits, k=3))  # 3 números aleatorios
-        return f"{letras}-{numeros}"
+    def obtenerPlacas(self):
+        return self.placas
 
-# Servidor para manejar las solicitudes
-# Clase que hereda de una de las clases generadas con los proto
 class SolicitarViajeServicer(uber_proto_pb2_grpc.SolicitarViajeServicer):
-
-    # Inciializamos la clase generando 10 autos usando nuestra clase anterior
     def __init__(self):
+        # lista de autos
         self.autos = []
-        
+        # viajes realizados 
+        self.viajes_realizados = 0
+        # ganancia
+        self.ganancia_total = 0
+        # Creamos los 10 autos
         for i in range(10):
-            # Generamos posiciónes aleatoria para cada auto
             x = random.randint(0, 50)
             y = random.randint(0, 50)
-            # Aleatoriamente asignamos la dispoibilidad (con dos opciones)
             disponible = random.choice([True, False])
-            # Creamos el auto y lo añadimos a la lista
             self.autos.append(Auto(id_auto=i, x=x, y=y, disponible=disponible))
 
     def InfoAuto(self, request, context):
-        #Coordenadas del cliente
-        cliente_x = request.x
-        cliente_y = request.y
-
-        # Autos disponibles
+        cliente_x, cliente_y = request.x, request.y
         autos_disponibles = [auto for auto in self.autos if auto.disponible]
 
         if not autos_disponibles:
@@ -53,39 +47,71 @@ class SolicitarViajeServicer(uber_proto_pb2_grpc.SolicitarViajeServicer):
             context.set_code(grpc.StatusCode.UNAVAILABLE)
             return uber_proto_pb2.InfoResponse()
 
-        # Función para calcular la distancia Euclidiana
+        # funcion para calcular la distancia
         def calcular_distancia(auto):
             return math.sqrt((auto.x - cliente_x) ** 2 + (auto.y - cliente_y) ** 2)
 
-        # encontramos el automa más cercano de los disponibles
+        # Obtenemos el auto más cercado 
         auto_mas_cercano = min(autos_disponibles, key=calcular_distancia)
+        tarifa = {
+            uber_proto_pb2.tipo_uber.Uber_Planet: 10,
+            uber_proto_pb2.tipo_uber.Uber_XL: 15,
+            uber_proto_pb2.tipo_uber.Uber_Black: 25,
+        }[auto_mas_cercano.tipo_uber]
 
-        # Obtener tarifa según el tipo de Uber
-        if auto_mas_cercano.tipo_uber == uber_proto_pb2.tipo_uber.Uber_Planet:
-            tarifa = 10
-        elif auto_mas_cercano.tipo_uber == uber_proto_pb2.tipo_uber.Uber_XL:
-            tarifa = 15
-        else:
-            tarifa = 25
-
-        # Crear la respuesta con el auto más cercano disponible
+        # respuesta 
         response = uber_proto_pb2.InfoResponse(
-            disponible=auto_mas_cercano.disponible,
+            disponible=True,
             coordenadas=uber_proto_pb2.Posicion(x=auto_mas_cercano.x, y=auto_mas_cercano.y),
             uber=auto_mas_cercano.tipo_uber,
             tarifa=tarifa,
-            placas=auto_mas_cercano.generarPlacas(),
+            placas=auto_mas_cercano.obtenerPlacas(),  # Usar las placas fijas
+        )
+
+        # después de la respuesta colocamos que no esta disponible ya que esta en uun viaje
+        auto_mas_cercano.disponible = False
+        return response
+
+    def TerminarViaje(self, request, context):
+        #Buscamos el auto por las placas para terminar el viaje
+        auto = next((auto for auto in self.autos if auto.placas == request.placas), None)
+        
+        # si no hay autoos disponibles
+        if not auto:
+            context.set_details('Auto no encontrado')
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            return uber_proto_pb2.TerminarViajeResponse(exito=False)
+
+        # Actualizamos la posición del auto y marcarlo como disponible después de terminar el viaje
+        auto.x, auto.y = request.posicion_final.x, request.posicion_final.y
+        auto.disponible = True
+        
+        # Registrar el viaje en las estadísticas en el server
+        self.viajes_realizados += 1
+        self.ganancia_total += request.costo_viaje
+
+        return uber_proto_pb2.TerminarViajeResponse(exito=True)
+
+
+
+    # Serviicio para ver el estado de los autos, viajes realizados y ganancia 
+    def EstadoServicio(self, request, context):
+        autos_libres = sum(auto.disponible for auto in self.autos)
+        response = uber_proto_pb2.EstadoServicioResponse(
+            viajes_realizados=self.viajes_realizados,
+            autos_libres=autos_libres,
+            ganancia_total=self.ganancia_total,
         )
         return response
 
 def serve():
-    port = "50051"
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=20))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     uber_proto_pb2_grpc.add_SolicitarViajeServicer_to_server(SolicitarViajeServicer(), server)
-    server.add_insecure_port('[::]:' + port)
-    print(f"Server UberUAM {port}")
+    server.add_insecure_port('[::]:50051')
+    print("Uber UAM: Servidor iniciado en el puerto 50051")
     server.start()
     server.wait_for_termination()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     serve()

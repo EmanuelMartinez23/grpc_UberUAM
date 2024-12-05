@@ -24,19 +24,27 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10uber_proto.proto\" \n\x08Posicion\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"|\n\x0cInfoResponse\x12\x12\n\ndisponible\x18\x01 \x01(\x08\x12\x1e\n\x0b\x63oordenadas\x18\x02 \x01(\x0b\x32\t.Posicion\x12\x18\n\x04uber\x18\x03 \x01(\x0e\x32\n.tipo_uber\x12\x0e\n\x06tarifa\x18\x04 \x01(\x05\x12\x0e\n\x06placas\x18\x05 \x01(\t*9\n\ttipo_uber\x12\x0f\n\x0bUber_Planet\x10\x00\x12\x0b\n\x07Uber_XL\x10\x01\x12\x0e\n\nUber_Black\x10\x02\x32\x36\n\x0eSolicitarViaje\x12$\n\x08InfoAuto\x12\t.Posicion\x1a\r.InfoResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10uber_proto.proto\" \n\x08Posicion\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"|\n\x0cInfoResponse\x12\x12\n\ndisponible\x18\x01 \x01(\x08\x12\x1e\n\x0b\x63oordenadas\x18\x02 \x01(\x0b\x32\t.Posicion\x12\x18\n\x04uber\x18\x03 \x01(\x0e\x32\n.tipo_uber\x12\x0e\n\x06tarifa\x18\x04 \x01(\x05\x12\x0e\n\x06placas\x18\x05 \x01(\t\"^\n\x14TerminarViajeRequest\x12!\n\x0eposicion_final\x18\x01 \x01(\x0b\x32\t.Posicion\x12\x0e\n\x06placas\x18\x02 \x01(\t\x12\x13\n\x0b\x63osto_viaje\x18\x03 \x01(\x05\"&\n\x15TerminarViajeResponse\x12\r\n\x05\x65xito\x18\x01 \x01(\x08\"a\n\x16\x45stadoServicioResponse\x12\x19\n\x11viajes_realizados\x18\x01 \x01(\x05\x12\x14\n\x0c\x61utos_libres\x18\x02 \x01(\x05\x12\x16\n\x0eganancia_total\x18\x03 \x01(\x05\"\x07\n\x05\x45mpty*9\n\ttipo_uber\x12\x0f\n\x0bUber_Planet\x10\x00\x12\x0b\n\x07Uber_XL\x10\x01\x12\x0e\n\nUber_Black\x10\x02\x32\xa9\x01\n\x0eSolicitarViaje\x12$\n\x08InfoAuto\x12\t.Posicion\x1a\r.InfoResponse\x12>\n\rTerminarViaje\x12\x15.TerminarViajeRequest\x1a\x16.TerminarViajeResponse\x12\x31\n\x0e\x45stadoServicio\x12\x06.Empty\x1a\x17.EstadoServicioResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'uber_proto_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_TIPO_UBER']._serialized_start=180
-  _globals['_TIPO_UBER']._serialized_end=237
+  _globals['_TIPO_UBER']._serialized_start=424
+  _globals['_TIPO_UBER']._serialized_end=481
   _globals['_POSICION']._serialized_start=20
   _globals['_POSICION']._serialized_end=52
   _globals['_INFORESPONSE']._serialized_start=54
   _globals['_INFORESPONSE']._serialized_end=178
-  _globals['_SOLICITARVIAJE']._serialized_start=239
-  _globals['_SOLICITARVIAJE']._serialized_end=293
+  _globals['_TERMINARVIAJEREQUEST']._serialized_start=180
+  _globals['_TERMINARVIAJEREQUEST']._serialized_end=274
+  _globals['_TERMINARVIAJERESPONSE']._serialized_start=276
+  _globals['_TERMINARVIAJERESPONSE']._serialized_end=314
+  _globals['_ESTADOSERVICIORESPONSE']._serialized_start=316
+  _globals['_ESTADOSERVICIORESPONSE']._serialized_end=413
+  _globals['_EMPTY']._serialized_start=415
+  _globals['_EMPTY']._serialized_end=422
+  _globals['_SOLICITARVIAJE']._serialized_start=484
+  _globals['_SOLICITARVIAJE']._serialized_end=653
 # @@protoc_insertion_point(module_scope)
