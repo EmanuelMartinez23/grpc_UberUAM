@@ -5,6 +5,7 @@ import random
 from concurrent import futures
 import uber_proto_pb2
 import uber_proto_pb2_grpc
+
 # Clase para Autos
 class Auto:
     def __init__(self, id_auto, x, y, disponible):
@@ -12,13 +13,10 @@ class Auto:
         self.x = x
         self.y = y
         self.disponible = disponible
-        self.tipo_uber = random.choice([
-            uber_proto_pb2.tipo_uber.Uber_Planet,
-            uber_proto_pb2.tipo_uber.Uber_XL,
-            uber_proto_pb2.tipo_uber.Uber_Black,
-        ])
-        #Generaramos placas una sola vez en el constructor
-        self.placas =f"{''.join(random.choices(string.ascii_uppercase, k=3))}-{''.join(random.choices(string.digits, k=3))}"
+        # Usamos un string para representar el tipo de Uber
+        self.tipo_uber = random.choice(["Uber_Planet", "Uber_XL", "Uber_Black"])
+        # Generamos placas una sola vez en el constructor
+        self.placas = f"{''.join(random.choices(string.ascii_uppercase, k=3))}-{''.join(random.choices(string.digits, k=3))}"
 
     def obtenerPlacas(self):
         return self.placas
@@ -27,7 +25,7 @@ class SolicitarViajeServicer(uber_proto_pb2_grpc.SolicitarViajeServicer):
     def __init__(self):
         # lista de autos
         self.autos = []
-        # viajes realizados 
+        # viajes realizados
         self.viajes_realizados = 0
         # ganancia
         self.ganancia_total = 0
@@ -47,54 +45,50 @@ class SolicitarViajeServicer(uber_proto_pb2_grpc.SolicitarViajeServicer):
             context.set_code(grpc.StatusCode.UNAVAILABLE)
             return uber_proto_pb2.InfoResponse()
 
-        # funcion para calcular la distancia
+        # función para calcular la distancia
         def calcular_distancia(auto):
             return math.sqrt((auto.x - cliente_x) ** 2 + (auto.y - cliente_y) ** 2)
 
-        # Obtenemos el auto más cercado 
+        # Obtenemos el auto más cercano
         auto_mas_cercano = min(autos_disponibles, key=calcular_distancia)
         tarifa = {
-            uber_proto_pb2.tipo_uber.Uber_Planet: 10,
-            uber_proto_pb2.tipo_uber.Uber_XL: 15,
-            uber_proto_pb2.tipo_uber.Uber_Black: 25,
+            "Uber_Planet": 10,
+            "Uber_XL": 15,
+            "Uber_Black": 25,
         }[auto_mas_cercano.tipo_uber]
 
-        # respuesta 
+        # respuesta
         response = uber_proto_pb2.InfoResponse(
             disponible=True,
             coordenadas=uber_proto_pb2.Posicion(x=auto_mas_cercano.x, y=auto_mas_cercano.y),
-            uber=auto_mas_cercano.tipo_uber,
+            uber=auto_mas_cercano.tipo_uber,  # Ahora es un string
             tarifa=tarifa,
             placas=auto_mas_cercano.obtenerPlacas(),  # Usar las placas fijas
         )
 
-        # después de la respuesta colocamos que no esta disponible ya que esta en uun viaje
+        # Después de la respuesta, colocamos que no está disponible ya que está en un viaje
         auto_mas_cercano.disponible = False
         return response
 
     def TerminarViaje(self, request, context):
-        #Buscamos el auto por las placas para terminar el viaje
+        # Buscamos el auto por las placas para terminar el viaje
         auto = next((auto for auto in self.autos if auto.placas == request.placas), None)
         
-        # si no hay autoos disponibles
         if not auto:
             context.set_details('Auto no encontrado')
             context.set_code(grpc.StatusCode.NOT_FOUND)
             return uber_proto_pb2.TerminarViajeResponse(exito=False)
 
-        # Actualizamos la posición del auto y marcarlo como disponible después de terminar el viaje
+        # Actualizamos la posición del auto y marcamos como disponible después de terminar el viaje
         auto.x, auto.y = request.posicion_final.x, request.posicion_final.y
         auto.disponible = True
         
-        # Registrar el viaje en las estadísticas en el server
+        # Registrar el viaje en las estadísticas del servidor
         self.viajes_realizados += 1
         self.ganancia_total += request.costo_viaje
 
         return uber_proto_pb2.TerminarViajeResponse(exito=True)
 
-
-
-    # Serviicio para ver el estado de los autos, viajes realizados y ganancia 
     def EstadoServicio(self, request, context):
         autos_libres = sum(auto.disponible for auto in self.autos)
         response = uber_proto_pb2.EstadoServicioResponse(
@@ -111,7 +105,6 @@ def serve():
     print("Uber UAM: Servidor iniciado en el puerto 50051")
     server.start()
     server.wait_for_termination()
-
 
 if __name__ == "__main__":
     serve()

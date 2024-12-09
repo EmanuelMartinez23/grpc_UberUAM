@@ -6,7 +6,7 @@ import time
 import sys
 import math
 
-# cliente para pasajeros
+# Cliente para pasajeros
 def cliente_pasajero(stub):
     # Generar posiciones de origen y destino aleatorias para la request
     origen = uber_proto_pb2.Posicion(x=random.randint(0, 50), y=random.randint(0, 50))
@@ -17,12 +17,12 @@ def cliente_pasajero(stub):
     print(f"Posición de destino: ({destino.x}, {destino.y})")
 
     try:
-        # Solicitamos un auto pasando las coordenadas de incio
+        # Solicitamos un auto pasando las coordenadas de inicio
         response = stub.InfoAuto(origen)
-        # Log 
-        print(f"Auto encontrado: {response.placas}, Tipo: {uber_proto_pb2.tipo_uber.Name(response.uber)}, Tarifa: {response.tarifa}")
+        # Log
+        print(f"Auto encontrado: {response.placas}, Tipo: {response.uber}, Tarifa: {response.tarifa}")
 
-        # Calculamos distancia para generar la ganacia y simular viaje
+        # Calculamos distancia para generar la ganancia y simular viaje
         distancia = math.sqrt((origen.x - destino.x) ** 2 + (origen.y - destino.y) ** 2)
         # Log
         print(f"Distancia del viaje: {distancia:.2f}")
@@ -45,34 +45,33 @@ def cliente_pasajero(stub):
     except grpc.RpcError as e:
         print(f"Error: {e.details()}")
 
-# Cliente para administradores 
+# Cliente para administradores
 def cliente_administrador(stub):
     try:
         # Bucle infinito para obtener en tiempo real los cambios
         while True:
-            # con el stub coinseguimos el servicio de estadoServicio y traer las estadisticas
+            # Con el stub conseguimos el servicio de estadoServicio y traemos las estadísticas
             response = stub.EstadoServicio(uber_proto_pb2.Empty())
-            #Log
+            # Log
             print(f"Viajes realizados: {response.viajes_realizados}, Autos libres: {response.autos_libres}, Ganancia total: {response.ganancia_total}")
             # Consultar cada 2 segundos
             time.sleep(2)
     except KeyboardInterrupt:
         print("Administrador detenido.")
 
-
-# funcion principal para el cliente
+# Función principal para el cliente
 def cliente():
-    # Uso del cliente, parametros solo sea uno
+    # Uso del cliente, parámetros solo sea uno
     if len(sys.argv) < 2:
         print("Uso: python client.py <rol>\nRoles: pasajero, administrador")
         return
-    # el role es el primer parametro posicional    
+    # El rol es el primer parámetro posicional    
     rol = sys.argv[1]
-    # creamos un canal de comunicación en  IP y Host dicha.
+    # Creamos un canal de comunicación en IP y Host
     channel = grpc.insecure_channel('localhost:50051')
     # Stub que va mantener los métodos remotos como locales
     stub = uber_proto_pb2_grpc.SolicitarViajeStub(channel)
-    # dependiendo el rol lanzar la función
+    # Dependiendo el rol, lanzamos la función
     if rol == "pasajero":
         cliente_pasajero(stub)
     elif rol == "administrador":

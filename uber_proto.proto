@@ -12,16 +12,10 @@ message Posicion {
   int32 y = 2;
 }
 
-enum tipo_uber {
-  Uber_Planet = 0;
-  Uber_XL = 1;
-  Uber_Black = 2;
-}
-
 message InfoResponse {
   bool disponible = 1;
   Posicion coordenadas = 2;
-  tipo_uber uber = 3;
+  string uber = 3;  // Usamos string en lugar de enum
   int32 tarifa = 4;
   string placas = 5;
 }
