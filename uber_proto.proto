@@ -1,10 +1,15 @@
 syntax = "proto3";
 
+option java_multiple_files = true;
+option java_package = "com.grpc.uber.uam";
+option java_outer_classname = "UberProto";
+option objc_class_prefix = "HLW";
 // Servicio 1
 service SolicitarViaje {
-  rpc InfoAuto(Posicion) returns (InfoResponse);
-  rpc TerminarViaje(TerminarViajeRequest) returns (TerminarViajeResponse);
-  rpc EstadoServicio(Empty) returns (EstadoServicioResponse);
+  rpc InfoAuto(Posicion) returns (InfoResponse){}
+  rpc TerminarViaje(TerminarViajeRequest) returns (TerminarViajeResponse){}
+  rpc EstadoServicio(Empty) returns (EstadoServicioResponse){}
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
 
 message Posicion {
@@ -37,3 +42,12 @@ message EstadoServicioResponse {
 }
 
 message Empty {}
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}

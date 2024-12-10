@@ -21,7 +21,7 @@ class Auto:
     def obtenerPlacas(self):
         return self.placas
 
-class SolicitarViajeServicer(uber_proto_pb2_grpc.SolicitarViajeServicer):
+class SolicitarViaje(uber_proto_pb2_grpc.SolicitarViajeServicer):
     def __init__(self):
         # lista de autos
         self.autos = []
@@ -97,11 +97,15 @@ class SolicitarViajeServicer(uber_proto_pb2_grpc.SolicitarViajeServicer):
             ganancia_total=self.ganancia_total,
         )
         return response
+    
+    def SayHello(self, request, context):
+        return uber_proto_pb2.HelloReply(message="Hello, %s!" % request.name)
 
 def serve():
+    port = "50051"
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    uber_proto_pb2_grpc.add_SolicitarViajeServicer_to_server(SolicitarViajeServicer(), server)
-    server.add_insecure_port('[::]:50051')
+    uber_proto_pb2_grpc.add_SolicitarViajeServicer_to_server(SolicitarViaje(), server)
+    server.add_insecure_port("[::]:" + port)
     print("Uber UAM: Servidor iniciado en el puerto 50051")
     server.start()
     server.wait_for_termination()
