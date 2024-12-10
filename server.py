@@ -30,7 +30,7 @@ class SolicitarViaje(uber_proto_pb2_grpc.SolicitarViajeServicer):
         # ganancia
         self.ganancia_total = 0
         # Creamos los 10 autos
-        for i in range(10):
+        for i in range(20):
             x = random.randint(0, 50)
             y = random.randint(0, 50)
             disponible = random.choice([True, False])

@@ -27,6 +27,7 @@ if _version_not_supported:
 
 class SolicitarViajeStub(object):
     """Servicio 1
+
     """
 
     def __init__(self, channel):
@@ -36,22 +37,22 @@ class SolicitarViajeStub(object):
             channel: A grpc.Channel.
         """
         self.InfoAuto = channel.unary_unary(
-                '/SolicitarViaje/InfoAuto',
+                '/uam.SolicitarViaje/InfoAuto',
                 request_serializer=uber__proto__pb2.Posicion.SerializeToString,
                 response_deserializer=uber__proto__pb2.InfoResponse.FromString,
                 _registered_method=True)
         self.TerminarViaje = channel.unary_unary(
-                '/SolicitarViaje/TerminarViaje',
+                '/uam.SolicitarViaje/TerminarViaje',
                 request_serializer=uber__proto__pb2.TerminarViajeRequest.SerializeToString,
                 response_deserializer=uber__proto__pb2.TerminarViajeResponse.FromString,
                 _registered_method=True)
         self.EstadoServicio = channel.unary_unary(
-                '/SolicitarViaje/EstadoServicio',
+                '/uam.SolicitarViaje/EstadoServicio',
                 request_serializer=uber__proto__pb2.Empty.SerializeToString,
                 response_deserializer=uber__proto__pb2.EstadoServicioResponse.FromString,
                 _registered_method=True)
         self.SayHello = channel.unary_unary(
-                '/SolicitarViaje/SayHello',
+                '/uam.SolicitarViaje/SayHello',
                 request_serializer=uber__proto__pb2.HelloRequest.SerializeToString,
                 response_deserializer=uber__proto__pb2.HelloReply.FromString,
                 _registered_method=True)
@@ -59,6 +60,7 @@ class SolicitarViajeStub(object):
 
 class SolicitarViajeServicer(object):
     """Servicio 1
+
     """
 
     def InfoAuto(self, request, context):
@@ -110,14 +112,15 @@ def add_SolicitarViajeServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'SolicitarViaje', rpc_method_handlers)
+            'uam.SolicitarViaje', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('SolicitarViaje', rpc_method_handlers)
+    server.add_registered_method_handlers('uam.SolicitarViaje', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
 class SolicitarViaje(object):
     """Servicio 1
+
     """
 
     @staticmethod
@@ -134,7 +137,7 @@ class SolicitarViaje(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/SolicitarViaje/InfoAuto',
+            '/uam.SolicitarViaje/InfoAuto',
             uber__proto__pb2.Posicion.SerializeToString,
             uber__proto__pb2.InfoResponse.FromString,
             options,
@@ -161,7 +164,7 @@ class SolicitarViaje(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/SolicitarViaje/TerminarViaje',
+            '/uam.SolicitarViaje/TerminarViaje',
             uber__proto__pb2.TerminarViajeRequest.SerializeToString,
             uber__proto__pb2.TerminarViajeResponse.FromString,
             options,
@@ -188,7 +191,7 @@ class SolicitarViaje(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/SolicitarViaje/EstadoServicio',
+            '/uam.SolicitarViaje/EstadoServicio',
             uber__proto__pb2.Empty.SerializeToString,
             uber__proto__pb2.EstadoServicioResponse.FromString,
             options,
@@ -215,7 +218,7 @@ class SolicitarViaje(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/SolicitarViaje/SayHello',
+            '/uam.SolicitarViaje/SayHello',
             uber__proto__pb2.HelloRequest.SerializeToString,
             uber__proto__pb2.HelloReply.FromString,
             options,

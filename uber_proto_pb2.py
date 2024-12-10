@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10uber_proto.proto\" \n\x08Posicion\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"p\n\x0cInfoResponse\x12\x12\n\ndisponible\x18\x01 \x01(\x08\x12\x1e\n\x0b\x63oordenadas\x18\x02 \x01(\x0b\x32\t.Posicion\x12\x0c\n\x04uber\x18\x03 \x01(\t\x12\x0e\n\x06tarifa\x18\x04 \x01(\x05\x12\x0e\n\x06placas\x18\x05 \x01(\t\"^\n\x14TerminarViajeRequest\x12!\n\x0eposicion_final\x18\x01 \x01(\x0b\x32\t.Posicion\x12\x0e\n\x06placas\x18\x02 \x01(\t\x12\x13\n\x0b\x63osto_viaje\x18\x03 \x01(\x05\"&\n\x15TerminarViajeResponse\x12\r\n\x05\x65xito\x18\x01 \x01(\x08\"a\n\x16\x45stadoServicioResponse\x12\x19\n\x11viajes_realizados\x18\x01 \x01(\x05\x12\x14\n\x0c\x61utos_libres\x18\x02 \x01(\x05\x12\x16\n\x0eganancia_total\x18\x03 \x01(\x05\"\x07\n\x05\x45mpty\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t2\xd9\x01\n\x0eSolicitarViaje\x12&\n\x08InfoAuto\x12\t.Posicion\x1a\r.InfoResponse\"\x00\x12@\n\rTerminarViaje\x12\x15.TerminarViajeRequest\x1a\x16.TerminarViajeResponse\"\x00\x12\x33\n\x0e\x45stadoServicio\x12\x06.Empty\x1a\x17.EstadoServicioResponse\"\x00\x12(\n\x08SayHello\x12\r.HelloRequest\x1a\x0b.HelloReply\"\x00\x42&\n\x11\x63om.grpc.uber.uamB\tUberProtoP\x01\xa2\x02\x03HLWb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10uber_proto.proto\x12\x03uam\" \n\x08Posicion\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"t\n\x0cInfoResponse\x12\x12\n\ndisponible\x18\x01 \x01(\x08\x12\"\n\x0b\x63oordenadas\x18\x02 \x01(\x0b\x32\r.uam.Posicion\x12\x0c\n\x04uber\x18\x03 \x01(\t\x12\x0e\n\x06tarifa\x18\x04 \x01(\x05\x12\x0e\n\x06placas\x18\x05 \x01(\t\"b\n\x14TerminarViajeRequest\x12%\n\x0eposicion_final\x18\x01 \x01(\x0b\x32\r.uam.Posicion\x12\x0e\n\x06placas\x18\x02 \x01(\t\x12\x13\n\x0b\x63osto_viaje\x18\x03 \x01(\x05\"&\n\x15TerminarViajeResponse\x12\r\n\x05\x65xito\x18\x01 \x01(\x08\"a\n\x16\x45stadoServicioResponse\x12\x19\n\x11viajes_realizados\x18\x01 \x01(\x05\x12\x14\n\x0c\x61utos_libres\x18\x02 \x01(\x05\x12\x16\n\x0eganancia_total\x18\x03 \x01(\x05\"\x07\n\x05\x45mpty\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t2\xf9\x01\n\x0eSolicitarViaje\x12.\n\x08InfoAuto\x12\r.uam.Posicion\x1a\x11.uam.InfoResponse\"\x00\x12H\n\rTerminarViaje\x12\x19.uam.TerminarViajeRequest\x1a\x1a.uam.TerminarViajeResponse\"\x00\x12;\n\x0e\x45stadoServicio\x12\n.uam.Empty\x1a\x1b.uam.EstadoServicioResponse\"\x00\x12\x30\n\x08SayHello\x12\x11.uam.HelloRequest\x1a\x0f.uam.HelloReply\"\x00\x42&\n\x11\x63om.grpc.uber.uamB\tUberProtoP\x01\xa2\x02\x03HLWb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,22 +32,22 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'uber_proto_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\021com.grpc.uber.uamB\tUberProtoP\001\242\002\003HLW'
-  _globals['_POSICION']._serialized_start=20
-  _globals['_POSICION']._serialized_end=52
-  _globals['_INFORESPONSE']._serialized_start=54
-  _globals['_INFORESPONSE']._serialized_end=166
-  _globals['_TERMINARVIAJEREQUEST']._serialized_start=168
-  _globals['_TERMINARVIAJEREQUEST']._serialized_end=262
-  _globals['_TERMINARVIAJERESPONSE']._serialized_start=264
-  _globals['_TERMINARVIAJERESPONSE']._serialized_end=302
-  _globals['_ESTADOSERVICIORESPONSE']._serialized_start=304
-  _globals['_ESTADOSERVICIORESPONSE']._serialized_end=401
-  _globals['_EMPTY']._serialized_start=403
-  _globals['_EMPTY']._serialized_end=410
-  _globals['_HELLOREQUEST']._serialized_start=412
-  _globals['_HELLOREQUEST']._serialized_end=440
-  _globals['_HELLOREPLY']._serialized_start=442
-  _globals['_HELLOREPLY']._serialized_end=471
-  _globals['_SOLICITARVIAJE']._serialized_start=474
-  _globals['_SOLICITARVIAJE']._serialized_end=691
+  _globals['_POSICION']._serialized_start=25
+  _globals['_POSICION']._serialized_end=57
+  _globals['_INFORESPONSE']._serialized_start=59
+  _globals['_INFORESPONSE']._serialized_end=175
+  _globals['_TERMINARVIAJEREQUEST']._serialized_start=177
+  _globals['_TERMINARVIAJEREQUEST']._serialized_end=275
+  _globals['_TERMINARVIAJERESPONSE']._serialized_start=277
+  _globals['_TERMINARVIAJERESPONSE']._serialized_end=315
+  _globals['_ESTADOSERVICIORESPONSE']._serialized_start=317
+  _globals['_ESTADOSERVICIORESPONSE']._serialized_end=414
+  _globals['_EMPTY']._serialized_start=416
+  _globals['_EMPTY']._serialized_end=423
+  _globals['_HELLOREQUEST']._serialized_start=425
+  _globals['_HELLOREQUEST']._serialized_end=453
+  _globals['_HELLOREPLY']._serialized_start=455
+  _globals['_HELLOREPLY']._serialized_end=484
+  _globals['_SOLICITARVIAJE']._serialized_start=487
+  _globals['_SOLICITARVIAJE']._serialized_end=736
 # @@protoc_insertion_point(module_scope)

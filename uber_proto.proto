@@ -4,7 +4,10 @@ option java_multiple_files = true;
 option java_package = "com.grpc.uber.uam";
 option java_outer_classname = "UberProto";
 option objc_class_prefix = "HLW";
+package uam;
+
 // Servicio 1
+
 service SolicitarViaje {
   rpc InfoAuto(Posicion) returns (InfoResponse){}
   rpc TerminarViaje(TerminarViajeRequest) returns (TerminarViajeResponse){}
